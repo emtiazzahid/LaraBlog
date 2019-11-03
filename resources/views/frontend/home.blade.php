@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('frontend.layouts.master')
 @section('content')
-    <h1>Welcome to the blog!</h1>
-@endsection
+    @include('frontend._article_list_new', ['articles' => $articles])
+@stop

@@ -7,13 +7,19 @@ use App\Mail\NotifySubscriberForNewArticle;
 use App\Models\Address;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\HitLogger;
 use App\Models\Keyword;
 use App\Models\User;
+use App\Models\VisitorTracker;
+use Artesaos\SEOTools\Facades\SEOTools;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ArticleController extends Controller
 {
@@ -34,21 +40,13 @@ class ArticleController extends Controller
                 'user',
                 'category',
                 'keywords',
-                'comments' => function ($comments) {
-                    return $comments->published();
-                },
-                'comments.user',
-                'comments.replies' => function ($replies) {
-                    return $replies->published();
-                },
-                'comments.replies.user'
             ])->first();
 
         if (is_null($article)) {
             return redirect()->route('home')->with('warningMsg', 'Article not found');
         }
 
-        //event(new ArticleHit($article, $clientIP));
+//        event(new ArticleHit($article, $clientIP));
 
         $article->isEditable = auth()->check()
             && (auth()->user()->hasRole([
@@ -58,6 +56,30 @@ class ArticleController extends Controller
                 || $article->user->id == auth()->user()->id);
 
         $relatedArticles = $this->getRelatedArticles($article);
+
+        $address = Address::where('ip' , $clientIP)->first();
+
+        if ($address) {
+            $visitor = HitLogger::where([
+                'address_id'   => $address->id,
+                'article_id'   => $articleId,
+            ])->first();
+
+            if ($visitor)  {
+                $visitor->increment('count');
+            } else {
+                HitLogger::create([
+                    'address_id'   => $address->id,
+                    'article_id'   => $articleId,
+                    'count'   => 1,
+                ]);
+            }
+        }
+
+        SEOTools::setTitle($article->heading);
+        SEOTools::setDescription($article->heading);
+        SEOTools::opengraph()->setUrl(url(route('get-article', $article->id, $article->heading)));
+        SEOTools::jsonLd()->addImage($article->image);
 
         return view('frontend.article', compact('article', 'relatedArticles'));
     }
@@ -132,17 +154,31 @@ class ArticleController extends Controller
     {
         $clientIP = $_SERVER['REMOTE_ADDR'];
 
-        $newArticle = $request->only(['heading', 'content', 'category_id', 'language']);
+        $newArticle = $request->only(['heading', 'content', 'category_id', 'language','image']);
         $newArticle['is_comment_enabled'] = $request->input('is_comment_enabled');
         $newAddress = ['ip' => $clientIP];
 
         try {
+            if ($request->get('image')){
+                $imageData = $request->get('image');
+                $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . explode('/', explode(':', substr($imageData, 0, strpos($imageData, ';')))[1])[1];
+                $img = Image::make($request->get('image'));
+                $img->resize(650, 450, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $img->stream();
+                Storage::disk('local')->put('articles/'.$fileName, $img, 'public');
+            }else{
+                $fileName = null;
+            }
+
             //Create new address
             $newAddress = Address::create($newAddress);
             //Create new article
             $newArticle['address_id'] = $newAddress->id;
             $newArticle['published_at'] = new \DateTime();
             $newArticle['user_id'] = Auth::user()->id;
+            $newArticle['image'] = $fileName;
             $newArticle = Article::create($newArticle);
             //add keywords
             $keywordsToAttach = array_unique(explode(' ', $request->get('keywords')));

@@ -15,7 +15,9 @@ class HomeController extends Controller
             return $dashboard->index();
         } else {
             $articles = Article::getPaginate($request);
-            return view('frontend.articles', compact('articles'));
+
+//            dd($articles->toArray());
+            return view('frontend.home', compact('articles'));
         }
     }
 }

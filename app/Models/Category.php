@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 
 class Category extends Model
 {
+    use Cachable;
+
     protected $guarded = ['id'];
     protected $appends = ['createdAtHuman'];
 

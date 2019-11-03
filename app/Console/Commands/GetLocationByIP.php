@@ -55,9 +55,9 @@ class GetLocationByIP extends Command
 
             if (!empty($location)) {
                 $address->update([
-                    'country_code' => $location->country_code,
-                    'country_name' => $location->country_name,
-                    'region_name' => $location->region_name,
+                    'country_code' => isset($location->country_code) ? $location->country_code : null,
+                    'country_name' => isset($location->country_name) ? $location->country_name : null,
+                    'region_name' => isset($location->region_name) ? $location->region_name : null,
                     'city' => $location->city ?? '',
                     'zip_code' => $location->zip ?? '',
                     'extra' => $location->extray ?? '',

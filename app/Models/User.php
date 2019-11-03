@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
+    use Cachable;
     use Notifiable;
     use EntrustUserTrait;
 

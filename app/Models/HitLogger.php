@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HitLogger extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = [];
     protected $appends = ['country', 'city'];
 
     public function article()

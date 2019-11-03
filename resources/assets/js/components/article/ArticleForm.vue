@@ -12,6 +12,14 @@
             </select>
         </div>
         <div class="form-group">
+            <input type="file" v-on:change="onFileChange" class="form-control">
+        </div>
+
+        <div class="form-group" v-if="article_data.image">
+            <img :src="article_data.image" class="img-responsive" style="max-height: 200px; width: auto">
+        </div>
+
+        <div class="form-group">
             <markdown-editor v-model="article_data.content" ref="markdownEditor"></markdown-editor>
         </div>
         <div class="text-grey">
@@ -74,6 +82,7 @@
                         keywords: '',
                         language: 'ben',
                         is_comment_enabled: true,
+                        image: ''
                     }
                 }
             }
@@ -84,6 +93,20 @@
             }
         },
         methods: {
+            onFileChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createImage(files[0]);
+            },
+            createImage(file) {
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.article_data.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
             storeArticle() {
                 let l = Ladda.create(document.querySelector('#submit-btn'));
                 l.start();
