@@ -17,11 +17,6 @@ class Article extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class)->with('user')->orderBy('id');
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -120,5 +115,10 @@ class Article extends Model
             ->withPath($paginateUrl);
 
         return $articles;
+    }
+
+    public function visitors()
+    {
+        return $this->hasMany(VisitorTracker::class,'article_id');
     }
 }

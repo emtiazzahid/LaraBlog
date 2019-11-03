@@ -7,8 +7,11 @@ use App\Mail\NotifySubscriberForNewArticle;
 use App\Models\Address;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\HitLogger;
 use App\Models\Keyword;
 use App\Models\User;
+use App\Models\VisitorTracker;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,21 +40,13 @@ class ArticleController extends Controller
                 'user',
                 'category',
                 'keywords',
-                'comments' => function ($comments) {
-                    return $comments->published();
-                },
-                'comments.user',
-                'comments.replies' => function ($replies) {
-                    return $replies->published();
-                },
-                'comments.replies.user'
             ])->first();
 
         if (is_null($article)) {
             return redirect()->route('home')->with('warningMsg', 'Article not found');
         }
 
-        //event(new ArticleHit($article, $clientIP));
+//        event(new ArticleHit($article, $clientIP));
 
         $article->isEditable = auth()->check()
             && (auth()->user()->hasRole([
@@ -62,7 +57,31 @@ class ArticleController extends Controller
 
         $relatedArticles = $this->getRelatedArticles($article);
 
-        return view('frontend.article_new', compact('article', 'relatedArticles'));
+        $address = Address::where('ip' , $clientIP)->first();
+
+        if ($address) {
+            $visitor = HitLogger::where([
+                'address_id'   => $address->id,
+                'article_id'   => $articleId,
+            ])->first();
+
+            if ($visitor)  {
+                $visitor->increment('count');
+            } else {
+                HitLogger::create([
+                    'address_id'   => $address->id,
+                    'article_id'   => $articleId,
+                    'count'   => 1,
+                ]);
+            }
+        }
+
+        SEOTools::setTitle($article->heading);
+        SEOTools::setDescription($article->heading);
+        SEOTools::opengraph()->setUrl(url(route('get-article', $article->id, $article->heading)));
+        SEOTools::jsonLd()->addImage($article->image);
+
+        return view('frontend.article', compact('article', 'relatedArticles'));
     }
 
     private function getRelatedArticles(Article $article)

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Config;
+use App\Models\HitLogger;
 use App\Services\GeoIp\GeoIp;
 use App\Services\GeoIp\IpStack;
 use Illuminate\Support\Facades\View;
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
     {
         try {
             View::share('navCategories', Category::getNonEmptyOnly());
+            View::share('popularArticles', HitLogger::with('article.user')
+                ->orderby('count', 'asc')->limit(5)
+                ->get());
             View::share('globalConfigs', Config::allFormatted());
         } catch (\PDOException $e) {
             //TODO handle response

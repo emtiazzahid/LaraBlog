@@ -1,8 +1,8 @@
 <aside id="colorlib-aside" role="complementary" class="js-fullheight">
     <nav id="colorlib-main-menu" role="navigation">
         <ul>
-            <li class="colorlib-active"><a href="{{route('home')}}">Home</a></li>
-            <li><a href="{{route('articles')}}">Articles</a></li>
+            <li class="{{ (\Request::route()->getName() == 'home') ? 'colorlib-active' : '' }}"><a href="{{route('home')}}">Home</a></li>
+            <li class="{{ (\Request::route()->getName() == 'articles') ? 'colorlib-active' : '' }}"><a href="{{route('articles')}}">Articles</a></li>
         </ul>
     </nav>
     <div class="colorlib-footer">

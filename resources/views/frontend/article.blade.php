@@ -1,76 +1,63 @@
-@extends('layouts.public')
+@extends('frontend.layouts.master')
+@section('title', $article->heading)
 @section('content')
-    <div id="article">
+	<div class="col-lg-8 px-md-5 py-5">
+		<div class="row pt-md-4">
+			<h1 class="mb-3">{{$article->heading}}</h1>
+			<div class="margin-bottom-10">
+				<span class="text-grey">Written {{$article->createdAtHuman}}</span>
+				<span class="text-grey">by {{$article->user->name}} on </span>
+				<a href="{{route('articles-by-category', $article->category->alias)}}">{{$article->category->name}}</a>
+				@if($article->isEditable)
+					<a href="{{route('edit-article', $article->id)}}"><span class="fa fa-edit"></span></a>
+				@endif
+			</div>
+			{!! $article->contentAsHtml !!}
+			<div class="tag-widget post-tag-container mb-5 mt-5">
+				<div class="tagcloud">
+					@foreach($article->keywords as $keyword)
+						@if($keyword->name)
+						<a href="{{route('articles-by-keyword', [$keyword->name])}}" class="tag-cloud-link">{{$keyword->name}}</a>
+						@endif
+					@endforeach
+				</div>
+			</div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <h1 class="article-heading text-xlg no-margin-bottom">{{$article->heading}}</h1>
-                <div class="margin-bottom-10">
-                    <span class="text-grey">Written {{$article->createdAtHuman}}</span>
-                    <span class="text-grey">by {{$article->user->name}} on </span>
-                    <a href="{{route('articles-by-category', $article->category->alias)}}">{{$article->category->name}}</a>
-                    @if($article->isEditable)
-                        <a href="{{route('edit-article', $article->id)}}"><span class="fa fa-edit"></span></a>
-                    @endif
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 text-justify text-md">{!! $article->contentAsHtml !!}</div>
-        </div>
-        <hr class="margin-bottom-10 margin-top-10">
-        <div class="row">
-            <div class="col-sm-1"><strong>Keywords:</strong></div>
-            <div class="col-md-11">
-                @foreach($article->keywords as $keyword)
-                    <a href="{{route('articles-by-keyword', [$keyword->name])}}">
-                        <span class="label label-info">{{$keyword->name}}</span>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-        <hr class="margin-bottom-10 margin-top-10">
-        @if(!$relatedArticles->isEmpty())
-            <div class="row">
-                <div class="col-sm-12 text-lg">
-                    <strong>More Articles on
-                        <a href="{{route('articles-by-category', ['categoryAlias' => $article->category->alias])}}">{{$article->category->name}}</a>
-                    </strong>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-12" id="related-articles">
-                    @include('frontend._article_list', ['articles' => $relatedArticles])
-                </div>
-            </div>
-        @endif
+			<div class="about-author d-flex p-4 bg-light" style="width: 100%">
+				<div class="bio mr-5">
+					<img src="{{ get_gravatar($article->user->email, 100) }}" alt="Image placeholder" class="img-fluid mb-4">
+				</div>
+				<div class="desc">
+					<h3>{{ $article->user->name }}</h3>
+				</div>
+			</div>
+		</div>
+		@if($article->is_comment_enabled)
+			<hr class="margin-bottom-15 margin-top-10">
 
-        @if($article->is_comment_enabled)
+			<div class="comment-form-wrap pt-5">
+				<div id="disqus_thread"></div>
+				<script>
 
-            <div class="row margin-top-15" id="comment-form">
-                <comment-form :add_comment_url="'{{route('add-comment', $article->id)}}'"></comment-form>
-            </div>
+                    /**
+                     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+                    /*
+                    var disqus_config = function () {
+                    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                    };
+                    */
+                    (function() { // DON'T EDIT BELOW THIS LINE
+                        var d = document, s = d.createElement('script');
+                        s.src = 'https://lara-blog-6.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <strong class="text-lg">Comments({{count($article->comments)}})</strong>
-                    <span class="fa fa-3x fa-commenting-o text-primary pointer" id="comment-btn"
-                          title="Post a comment"></span>
-                </div>
-            </div>
-            <hr class="margin-bottom-15 margin-top-10">
-
-            <section id="comments" class="margin-bottom-15">
-                @include('frontend._comments', ['article' => $article, 'comments' => $article->comments->where('parent_comment_id', null)])
-            </section>
-        @endif
-    </div>
-@endsection
-
-@section("inPageJS")
-    @parent
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
-@endsection
+			</div>
+		@endif
+	</div>
+@stop

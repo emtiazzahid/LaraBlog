@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Andrea - Free Bootstrap 4 Template by Colorlib</title>
+    <title>@yield('title')</title>
     <meta charset="utf-8">
+    {!! SEO::generate() !!}
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
