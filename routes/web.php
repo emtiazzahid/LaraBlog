@@ -26,10 +26,6 @@ Route::get('category/article/{categoryAlias}', 'CategoryController@getArticles')
 Route::get('keyword/article/{keywordName}', 'KeywordController@getArticles')->name('articles-by-keyword');
 Route::get('search', 'ArticleController@search')->name('search-article');
 
-//Comment
-Route::post('comment/{articleId}', 'CommentController@store')->name('add-comment');
-Route::get('comment/{commentId}/confirm', 'CommentController@confirmComment')->name('confirm-comment');
-
 //Category
 Route::get('category/{categoryId}', 'CategoryController@show')->name('get-category');
 
@@ -62,15 +58,6 @@ Route::group(['middleware' => ['customAuth', 'role:owner|admin|author']], functi
     Route::post('admin/article', 'ArticleController@store')->name('store-article');
     Route::get('admin/article/{articleId}/edit', 'ArticleController@edit')->name('edit-article');
     Route::put('admin/article/{articleId}', 'ArticleController@update')->name('update-article');
-
-    //Admin comments
-    Route::get('admin/comment', 'CommentController@index')->name('comments');
-    Route::get('admin/comment/{commentId}/delete', 'CommentController@destroy')->name('delete-comment');
-    Route::get(
-        'admin/comment/toggle-publish/{commentId}',
-        'CommentController@togglePublish'
-    )->name('toggle-comment-publish');
-    Route::put('admin/comment/{commentId}', 'CommentController@update')->name('update-comment');
 
     //Admin feedback
     Route::get('admin/feedback', 'FeedbackController@index')->name('feedbacks');

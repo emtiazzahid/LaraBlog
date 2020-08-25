@@ -182,6 +182,7 @@ return [
         //customer added providers
         Zizaco\Entrust\EntrustServiceProvider::class,
         Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+        \EmtiazZahid\LaravelComposer\LaravelComposerServiceProvider::class
     ],
 
     /*

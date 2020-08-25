@@ -20,7 +20,11 @@
         <h3 class="sidebar-heading">Popular Articles</h3>
         @foreach($popularArticles as $item)
         <div class="block-21 mb-4 d-flex">
-            <a class="blog-img mr-4" style="background-image: url({{ $item->article->image }});"></a>
+            @if($item->article->image)
+            <a class="blog-img mr-4" style="background-image: url({{ asset('storage/app/articles/'.$item->article->image) }});"></a>
+            @else
+            <a class="blog-img mr-4" style="background-image: url({{ asset('images/article-placeholder.png') }});"></a>
+            @endif
             <div class="text">
                 <h3 class="heading"><a href="{{ route('get-article',  $item->article->id,  $item->article->heading)  }}">{{ $item->article->heading }}</a></h3>
                 <div class="meta">
@@ -33,16 +37,13 @@
     </div>
 
     <div class="sidebar-box ftco-animate">
-        <h3 class="sidebar-heading">Tag Cloud</h3>
+        <h3 class="sidebar-heading">Keywords</h3>
         <ul class="tagcloud">
-            <a href="#" class="tag-cloud-link">animals</a>
-            <a href="#" class="tag-cloud-link">human</a>
-            <a href="#" class="tag-cloud-link">people</a>
-            <a href="#" class="tag-cloud-link">cat</a>
-            <a href="#" class="tag-cloud-link">dog</a>
-            <a href="#" class="tag-cloud-link">nature</a>
-            <a href="#" class="tag-cloud-link">leaves</a>
-            <a href="#" class="tag-cloud-link">food</a>
+            @foreach($keywords as $keyword)
+                @if($keyword->name)
+                    <a href="{{route('articles-by-keyword', [$keyword->name])}}" class="tag-cloud-link">{{$keyword->name}}</a>
+                @endif
+            @endforeach
         </ul>
     </div>
 </div><!-- END COL -->
