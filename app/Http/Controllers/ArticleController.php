@@ -66,7 +66,14 @@ class ArticleController extends Controller
             ])->first();
 
             if ($visitor)  {
-                $visitor->increment('count');
+                // Hit log will not record if user visit again withing in 1 hour for same article
+                $noRecentVisitor = HitLogger::where('updated_at', '<', Carbon::now()->subHours(1))
+                    ->where('id', $visitor->id)
+                    ->first();
+
+                if ($noRecentVisitor) {
+                    $noRecentVisitor->increment('count');
+                }
             } else {
                 HitLogger::create([
                     'address_id'   => $address->id,
@@ -223,7 +230,9 @@ class ArticleController extends Controller
 
     public function search(Request $request)
     {
-        $this->validate($request, ['query_string' => 'required']);
+        $this->validate($request, [
+            'query_string' => 'required'
+        ]);
 
         $queryString = $request->get('query_string');
         $keywords = Keyword::where('name', 'LIKE', "%$queryString%")->where('is_active', 1)->get();
@@ -232,7 +241,7 @@ class ArticleController extends Controller
         $articles = Article::published()
             ->notDeleted()
             ->whereIn('id', $articleIDsByKeywords)
-            ->where('heading', 'LIKE', "%$queryString%")
+            ->orWhere('heading', 'LIKE', "%$queryString%")
             ->orWhere('content', 'LIKE', "%$queryString%")
             ->latest()
             ->paginate(config('view.item_per_page'));

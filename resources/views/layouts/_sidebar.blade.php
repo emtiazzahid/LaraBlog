@@ -26,13 +26,6 @@
                             <span class="hidden-sm">Articles</span>
                         </a>
                     </li>
-                    <li class="{{Request::is('admin/comment*') ? "active":""}}">
-                        <a href="{{route('comments')}}">
-                            <span class="fa fa-comment-o"></span>
-                            <span class="hidden-sm">Comments</span>
-                            <span class="badge bg-danger" style="display: none;" id="new-comment">New</span>
-                        </a>
-                    </li>
                 @endrole
                 @role(['owner','admin'])
                     <li class="{{Request::is('admin/category*') ? "active":""}}">

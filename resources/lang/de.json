@@ -1,0 +1,110 @@
+{
+    "accepted": "Die :Attribut muss akzeptiert werden.",
+    "active_url": "Die :Attribut ist keine gültige URL.",
+    "after": "Der :attribute muss ein Datum nach :Datum.",
+    "after_or_equal": "Der :attribute muss ein Datum nach oder gleich :das Datum.",
+    "alpha": "Der :attribute darf nur Buchstaben enthalten.",
+    "alpha_dash": "Der :attribute darf nur aus Buchstaben, zahlen, Bindestriche und Unterstriche.",
+    "alpha_num": "Der :attribute darf nur Buchstaben und zahlen enthalten.",
+    "array": "Die :Attribut muss ein array sein.",
+    "before": "Der :attribute muss ein Datum vor dem :date.",
+    "before_or_equal": "Der :attribute muss ein Datum vor oder gleich nach :Datum.",
+    "between": {
+        "numeric": "Die :Attribut muss zwischen min und max.",
+        "file": "Die :Attribut muss zwischen :min :max Kilobyte.",
+        "string": "Die :Attribut muss zwischen min und max Zeichen.",
+        "array": "Die :Attribut muss zwischen :min :max Elemente."
+    },
+    "bn": "asdadasd",
+    "boolean": "Die :Attribut Feld muss true oder false sein.",
+    "confirmed": "Die :Attribut ist nicht bestaetigt.",
+    "custom": {
+        "attribute-name": {
+            "rule-name": "custom-Nachricht"
+        }
+    },
+    "date": "Die :Attribut ist nicht ein gültiges Datum ist.",
+    "date_equals": "Der :attribute muss ein Datum gleich :das Datum.",
+    "date_format": "Die :Attribut entspricht nicht dem format : - format.",
+    "different": "Die :Attribut und :der andere muss anders sein.",
+    "digits": "Die :Attribut muss :Ziffern Ziffern.",
+    "digits_between": "Die :Attribut muss zwischen min und max stellen.",
+    "dimensions": "Die :Attribut hat ungültige Bild-Dimensionen.",
+    "distinct": "Die :Attribut-Feld hat einen doppelten Wert.",
+    "email": "Der : - Attribut muss eine gültige E-Mail-Adresse.",
+    "exists": "Die gewählten : - Attribut ist ungültig.",
+    "file": "Der : - Attribut muss eine Datei.",
+    "filled": "Die :Attribut-Feld muss einen Wert haben.",
+    "gt": {
+        "numeric": "Die :das Attribut muss größer sein als :Wert.",
+        "file": "Die :das Attribut muss größer sein als :Wert in Kilobyte.",
+        "string": "Die :das Attribut muss größer sein als : - Zeichen.",
+        "array": "Die :Attribut, muss mehr haben als :Wert der Elemente."
+    },
+    "gte": {
+        "numeric": "Die :das Attribut muss größer als oder gleich :Wert.",
+        "file": "Die :das Attribut muss größer als oder gleich :Wert in Kilobyte.",
+        "string": "Die :das Attribut muss größer als oder gleich\": Zeichen.",
+        "array": "Die :Attribut muss :Wert oder mehr Elemente."
+    },
+    "image": "Die :Attribut muss ein Bild sein.",
+    "in": "Die gewählten : - Attribut ist ungültig.",
+    "in_array": "Die :Attribut Feld nicht vorhanden in :anderen.",
+    "integer": "Der : - Attribut muss eine Ganzzahl sein.",
+    "ip": "Der : - Attribut muss eine gültige IP-Adresse.",
+    "ipv4": "Der : - Attribut muss eine gültige IPv4-Adresse.",
+    "ipv6": "Der : - Attribut muss eine gültige IPv6-Adresse.",
+    "json": "Der : - Attribut muss ein Gültiger JSON-string.",
+    "lt": {
+        "numeric": "Die :Attribut muss kleiner sein als Wert.",
+        "file": "Die :Attribut muss kleiner sein als der Wert in Kilobyte.",
+        "string": "Die :das Attribut muss kleiner sein als : - Zeichen.",
+        "array": "Die :Attribut muss kleiner als :Wert der Elemente."
+    },
+    "lte": {
+        "numeric": "Die :das Attribut muss kleiner als oder gleich :Wert.",
+        "file": "Die :das Attribut muss kleiner als oder gleich :Wert in Kilobyte.",
+        "string": "Die :das Attribut muss kleiner als oder gleich\": Zeichen.",
+        "array": "Die :Attribut darf nicht mehr als :Wert der Elemente."
+    },
+    "max": {
+        "numeric": "Die :Attribut kann nicht größer als :max.",
+        "file": "Die :Attribut darf nicht größer sein als :max Kilobyte.",
+        "string": "Die :Attribut darf nicht größer sein als :max Zeichen.",
+        "array": "Die :Attribut darf nicht mehr als max Elemente."
+    },
+    "mimes": "Der : - Attribut muss eine Datei vom Typ: :Werte.",
+    "mimetypes": "Der : - Attribut muss eine Datei vom Typ: :Werte.",
+    "min": {
+        "numeric": "Die :Attribut muss mindestens :min.",
+        "file": "Die :Attribut muss mindestens :min Kilobyte.",
+        "string": "Die :Attribut muss mindestens min Zeichen.",
+        "array": "Die :Attribut muss mindestens :min-Elemente."
+    },
+    "not_in": "Die gewählten : - Attribut ist ungültig.",
+    "not_regex": "Der : - Attribut-format ist ungültig.",
+    "numeric": "Der :attribute muss eine Zahl sein.",
+    "present": "Das :Feld Attribut muss vorhanden sein.",
+    "regex": "Der : - Attribut-format ist ungültig.",
+    "required": "Die :Attribut Feld ist erforderlich.",
+    "required_if": "Die :Attribut Feld ist erforderlich, wenn :die andere ist :Wert.",
+    "required_unless": "Die :Attribut Feld ist erforderlich, es sei denn :andere :Werte.",
+    "required_with": "Die :Attribut Feld ist erforderlich, wenn :Werte vorhanden ist.",
+    "required_with_all": "Die :Attribut Feld ist erforderlich, wenn :Werte vorhanden sind.",
+    "required_without": "Die :Attribut Feld ist erforderlich, wenn : - Werte ist nicht vorhanden.",
+    "required_without_all": "Die :Attribut Feld ist erforderlich, wenn keiner der :Werte vorhanden sind.",
+    "same": "Der :attribute und :other übereinstimmen muss.",
+    "size": {
+        "numeric": "Der : - Attribut muss sein :die Größe.",
+        "file": "Der : - Attribut muss sein :Größe in Kilobyte.",
+        "string": "Der : - Attribut muss sein :Größe, Zeichen.",
+        "array": "Die :Attribut muss enthalten :die Größe der Elemente."
+    },
+    "starts_with": "Der : - Attribut muss mit einem der folgenden: :Werte",
+    "string": "Die :Attribut muss ein string sein.",
+    "timezone": "Der : - Attribut muss ein Gültiger zone.",
+    "unique": "Die :Attribut bereits genommen.",
+    "uploaded": "Die :Attribut konnte nicht hochgeladen werden.",
+    "url": "Der : - Attribut-format ist ungültig.",
+    "uuid": "Der : - Attribut muss ein Gültiger UUID."
+}
